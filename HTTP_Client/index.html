@@ -1,0 +1,903 @@
+<!--
+	Created November 2014
+	chris@anthum.com
+	www.anthum.com
+-->
+<html>
+<head>
+	 
+	<script src="https://www.httpvshttps.com/check-server.js"></script>
+	
+	<script>
+		function log(o) {if (console) console.log(o);}
+		var proto = window.location.protocol;
+		proto = proto.substring(0,proto.length-1);
+		function setActiveMenu() {
+			if ('http' == proto) {
+				document.getElementById('menu-http').className += ' active';
+			} else if ('https' == proto) {
+				document.getElementById('menu-https').className += ' active';
+			}
+		}
+	</script>
+
+	<script> 
+		 
+		if (!window.supportsLatestHTTPS) {
+			document.getElementsByTagName('html')[0].className+= ' unsupported-browser';
+		} 		var start = Date.now();
+		var elapsedMs;
+	</script>
+	<meta charset="utf-8">
+	<title>HTTP vs HTTPS — Test them both yourself</title>
+	<meta name="theme-color" content="#1ac222">
+	<meta id="ip-address" name="ip" content="108.92.148.9" />
+	<meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+
+	<meta content="summary" name="twitter:card" />
+
+	<meta name="descripton" content="Encrypted websites protect our privacy and are significantly faster.
+			Run this test and prepare to be amazed. ">
+	<meta name="twitter:description" content="Encrypted websites protect our privacy and are significantly faster. Run this test and be amazed. #HttpsEverywhere">
+
+	<meta property="og:description" content="Encrypted websites protect our privacy and are significantly faster. Run this test and prepare to be amazed. #HttpsEverywhere">
+
+	<meta property="og:url" content="http://www.httpvshttps.com/">
+	<meta name="twitter:url" content="http://www.httpvshttps.com/">
+
+	<meta content="https://www.httpvshttps.com/https-icon-192.png" name="twitter:image" />
+	<meta property="og:image" content="http://www.httpvshttps.com/https-icon-share.png">
+	<link rel="icon" sizes="192x192" href="https-icon-192.png">
+
+	<meta property="og:title" content="HTTP vs HTTPS Test">
+	<meta name="twitter:title" content="HTTP vs HTTPS">
+
+	<!--meta property="og:site_name" content="HTTP vs HTTPS"-->
+	<meta property="og:type" content="website">
+	<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>
+</head>
+<body>
+	<style>
+		* {
+			box-sizing: border-box;
+		}
+		#try-again img {
+			margin-top: 2em;
+			width: 40%;
+		}
+		#try-again {
+			text-align: center;
+			color: #c00;
+		}
+		body,html {
+			padding: 0;
+			margin: 0;
+			-webkit-font-smoothing: antialiased;
+			text-rendering: optimizeLegibility;
+		}
+	 	body {
+	 		font-family: "Open Sans", sans-serif;
+	 		/*font-family: "Roboto", sans-serif;*/
+	 		font-weight: 300;
+	 		background: #fff;
+			color: #404040;
+	 		max-width: 860px;
+	 		margin: 0 auto;
+	 		padding: 0 .5em;
+	 	}
+	 	strong {
+	 		font-weight: 700;
+	 	}
+		a {
+			color: blue;
+			text-decoration: none;
+		}
+		p {
+			line-height: 1.4em;
+			margin: 0;
+		}
+	 	.images {
+	 		margin: 0 auto 2rem auto;
+	 		text-align: center;
+	 		overflow: hidden;
+	 	}
+		.images img {
+			width: 20px;
+			height: 20px;
+			background: #eee;
+/*			background: #0b0;
+			background: #B00;
+*/			border-radius: 50%;
+			margin: 0;
+			padding: 0;
+		}
+		.images span {
+			padding : .1em;
+			float: left;
+			line-height: 20px;	
+			cursor: default;
+			border-radius: 50%;
+
+		}
+
+		#status {
+			padding: 0 0 1em 0;
+			border-bottom: 2px solid #eaeaea;
+			margin-bottom: 1em;
+			text-align: center;
+			overflow: hidden;
+		}
+		#time {
+			color: orange;
+			font-weight: bold;
+		}
+		.loaded #time {
+			color: #0b0;
+		}
+		.load, #compared {
+			text-align: center;
+		}
+		#compared {
+			color: #666;
+			/*font-weight: bold;*/
+			font-size: 120%;
+			font-weight: 400;
+			opacity: 0;
+			margin-top: .2em;
+			transition: all .3s ease-out;
+			transform: translateY(1em);
+		}
+		.loaded #compared {
+			opacity: 1;
+			transform: translateY(0em);
+		}
+		.loaded.slower #compared {
+			color: #b00;
+		}
+		.loaded.faster #compared {
+			color: #0b0;
+		}
+
+		.buttons {
+			display: inline-block;
+			margin: 1rem 0 0 0;
+		}
+		.buttons div {
+			display: inline-block;
+			padding: 0 .5em;
+			white-space: nowrap;
+		}
+		.buttons a {
+			display: inline-block;
+			padding: .5rem .2rem;
+		}
+		.buttons div.active {
+			border-bottom: 4px solid blue;
+		}
+		sub,sup {
+			position: relative;
+			font-size: 65%;
+			line-height: 0;
+			vertical-align: baseline;
+			display: inline-block;
+			color: #666;
+			left: .25em;
+
+		}
+		sub {
+			bottom: -.25em;
+			left: .1em;
+		}
+		sup {
+			top: -.50em;
+		}
+		footer {
+			padding: 3em 0;
+			margin: 2em 0 0 0;
+			text-align: center;
+			overflow: hidden;
+		}
+		.author {
+			margin-top: 2em;
+		}
+		.author a {
+			padding: 1rem .5rem 1rem .5rem;
+		}
+		.desc {
+			text-align: left;
+		}
+		.desc br {
+			display: none;
+		}
+		.load {
+			margin: 1rem 0 0 0;
+			font-size: 2.5rem;
+		}
+		h1 {
+			margin: 1rem 0 0 0;
+			font-size: 2rem;
+			font-weight: 300;
+			/*line-height: 1.5em;*/
+			padding:0;
+		}
+		h1 img {
+			height: 24px;
+			margin-right: 1em;
+		}
+		h2 {
+			margin: 1rem 0 1rem 0;
+			font-size: 1.25rem;
+			font-weight: 600;
+			line-height: 1.5em;
+		}
+		h1,h2, .desc p {
+			text-align: center;
+		}
+		.notice {
+			color: #c00;
+			font-size: 80%;
+			display: none;
+		}
+		#unsupported {
+			display: none;
+			background: url(warning.png) no-repeat 1em 1em #fcc;
+			background-size: 47px 50px;
+			border-bottom: 2px solid #F00;
+			margin: 0 -.5em;
+			padding: .5em .5em .5em 6em;
+			font-size: 80%;
+			min-height: 6em;
+		}
+		.unsupported-browser #unsupported {
+			display: block;
+		}
+		.shares {
+			height: 1rem;
+			margin-bottom: 5rem;
+		}
+		.share-box {
+			display: inline-block;
+			width: 7rem;
+		}
+		.share-box {
+			display: inline-block;
+			width: 30%;
+		}
+		.servers {
+			margin: 3rem auto 0 auto;
+			line-height: 1.5em;
+			max-width: 18rem;
+		}
+		footer p.sup {
+			text-align: left;
+			margin-top: 1em;
+		}
+		footer p.sup strong {
+			font-weight: 600;
+		}
+		.sup sup {
+			left: 0;
+			margin: 0 1em 0 2em;
+			font-weight: 600;
+		}
+		.le {
+			font-size: .75rem;
+			margin-top: 3rem;
+		}
+		.le-logo {
+			display: block;
+			margin-bottom: .5em;
+		}
+
+		.desktop {
+			display: none;
+		}
+
+		@media (min-width : 768px) {
+			.buttons {
+				display: inline-block;
+				margin: 0;
+			}
+			span.desktop {
+				display: inline;
+			}
+			footer p.sup {
+				text-align: left;
+				margin: 0;
+			}
+			.sup {
+				font-size: 1rem;
+			}
+			#unsupported {
+				font-size: 100%;
+				margin: 0;
+				padding: 1rem 1rem 1rem 5rem;
+				min-height: 0;
+			}
+			.images span {
+				padding : .25rem;
+				float: left;
+				margin: 0;
+				line-height: 20px;
+				text-align: center;
+			}
+
+			#try-again img {
+				margin-top: 2em;
+				width: 20%;
+			}
+
+			p {
+				line-height: 1.6em;
+			}
+			#status {
+				margin-bottom: 2em;
+			}
+			.desc {
+				float: left;
+				width: 68%;
+			}
+			.desc br {
+				display: block;
+			}
+			.right {
+				width: 30%;
+				margin: 1em 0;
+				float: right;
+				/*text-align: right;*/
+			}
+			footer {
+				color: #666;
+				margin: 2em 0 2em 0;
+				font-size: .7rem;
+			}
+			.servers {
+				margin-top: 4rem;
+			}
+
+			h2 {
+				margin: 1rem 0 0rem 0;
+				font-size: 1rem;
+				font-weight: 600;
+				line-height: 1.5em;
+			}
+			h1,h2, .desc p {
+				text-align: left;
+			}
+
+		}
+		.lock {
+			margin: 0 .3em;
+			fill: blue;
+		}
+	</style>
+	
+	 
+        <header class="nocontent" id="unsupported">
+                Your browser does not support HTTP2, and test results will be inaccurate. Please use the latest version
+                of <a href="https://www.google.com/chrome/">Chrome</a> or <a href="https://www.firefox.com">Firefox</a>. 
+                (<a href="http://caniuse.com/#search=http2">List of supported browsers</a>).
+        </header>
+	 
+
+         
+
+		<div id="status">
+		<div class="desc">
+			<h1>HTTP vs HTTPS Test</h1>
+			<h2>Encrypted Websites Protect Our Privacy and are Significantly Faster</h2>
+			<p>				
+				Compare load times of the unsecure HTTP and encrypted HTTPS versions of this page.
+				Each test loads 360 unique, non-cached images <span style="white-space: nowrap;">(0.62 MB</span> total).
+				<span class="desktop">For fastest results, run each test 2-3 times in a private/incognito browsing session.</span>
+			</p>
+		</div>
+		<div class="right">
+			<span class="buttons">
+				<div id="menu-http"><a href="http://www.httpvshttps.com/">HTTP</a></div>
+				<div id="menu-https"><a href="https://www.httpvshttps.com/"><svg class="lock" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="52 115 508 556" enable-background="new 0 0 0 0" width="11" height="12"><path d="M231.336,351.324h142.596V288.9v-0.612c0-9.792-1.938-18.972-5.812-27.54s-9.078-16.014-15.606-22.338 c-6.526-6.324-14.075-11.322-22.644-14.994s-17.748-5.508-27.54-5.508s-18.972,1.836-27.54,5.508s-16.116,8.772-22.644,15.3 c-6.528,6.528-11.628,14.076-15.3,22.644c-3.672,8.568-5.508,17.748-5.508,27.54L231.336,351.324L231.336,351.324z M540.396,351.324 c5.304,0,9.791,1.836,13.464,5.508c3.672,3.672,5.508,8.16,5.508,13.464v281.521c0,5.304-1.836,9.792-5.508,13.464 c-3.673,3.672-8.16,5.508-13.464,5.508H71.604c-5.304,0-9.792-1.836-13.464-5.508c-3.672-3.672-5.508-8.16-5.508-13.464V370.295 c0-5.304,1.836-9.792,5.508-13.464c3.672-3.672,8.16-5.508,13.464-5.508h26.928h31.212V288.9c0-23.664,4.59-46.104,13.77-67.32 c9.18-21.216,21.522-39.576,37.026-55.08s33.762-27.846,54.774-37.026c21.012-9.18,43.35-13.77,67.014-13.77 s46.104,4.59,67.32,13.77c21.216,9.18,39.574,21.522,55.078,37.026c15.506,15.504,27.848,33.864,37.026,55.08 s13.771,43.656,13.771,67.32v0.612v61.812h37.942H540.396L540.396,351.324z"></path></svg>HTTPS</a></div>
+			</span>
+					<div class="load"><span id="time" will-change>0.000 s</span></div>
+			<div id="compared" will-change>&nbsp;</div>
+				</div>
+	</div>
+
+	<script>
+		setActiveMenu();
+
+		
+		// run the clock and stop when all the images load
+		var timeEl = document.getElementById('time');
+		var statusEl = document.getElementById('status');
+		var clockUpdate;
+
+		function setElapsedTimeDisplay() {
+			elapsedMs = (Date.now()-start);
+			timeEl.firstChild.data = (elapsedMs/1000).toFixed(3)+' s';
+		}
+
+		clockUpdate = window.setInterval(function() {
+			setElapsedTimeDisplay();
+		}, 17);
+		window.onload = function() {
+			log("window.onload complete");
+			setElapsedTimeDisplay();
+			clearInterval(clockUpdate);
+			statusEl.className += ' loaded';
+
+			var lastResults = {};
+			try {
+				lastResults = JSON.parse(atob(document.cookie.replace(/(?:(?:^|.*;\s*)lastResults\s*\=\s*([^;]*).*$)|^.*$/, "$1")));
+			} catch (e) {}
+
+			if (!lastResults.id) {
+				lastResults.id = Date.now();
+				lastResults.ip = document.getElementById('ip-address').getAttribute('content');
+			}
+
+
+			var lastMs = -1;
+			if (lastResults.http && proto == 'https') {
+				lastMs = lastResults.http;
+			} else if (lastResults.https && proto == 'http') {
+				lastMs = lastResults.https;
+			}
+
+			var otherProto = (proto == 'http')? "HTTPS" : "HTTP";
+
+			var newClass = ' no-compare';
+			var compareText = 'Done! Please try '+otherProto+'.';
+			if (lastMs> 0) {
+				var diffMs = lastMs - elapsedMs;
+				var pct = Math.abs(Math.round(diffMs/lastMs*100));
+				newClass = ' faster';
+				if (diffMs == 0) {
+					return; // tie;
+				} else if (diffMs < 0) {
+					newClass = ' slower';
+				}
+				compareText = pct+'% '+newClass+' than '+otherProto;
+			}
+			statusEl.className += newClass;
+			document.getElementById('compared').innerHTML = compareText;
+
+			lastResults[proto] = elapsedMs;
+			lastResults.proto = proto;
+			var lastResultsString = JSON.stringify(lastResults);
+			document.cookie = 'lastResults='+btoa(lastResultsString)+'; path=/; max-age=120';
+			// log(lastResultsString);
+
+
+			log("loading external sharing scripts...");
+
+			// GA
+			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			m=s.getElementsByTagName(o)[0];a.async=0;a.src=g;m.parentNode.insertBefore(a,m);
+			a.onload=function() {log('google-analytics loaded.')};
+			})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+			ga('create', 'UA-50610215-2');
+			ga('require', 'displayfeatures');
+			ga('send', 'pageview');			
+			ga('send', 'event', 'httpvshttps.com', 'load-ms', lastResults.id+":"+proto, elapsedMs);
+			ga('send', 'event', 'httpvshttps.com', 'load-data', lastResultsString);
+
+			// Twitter Share
+			!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+
+			// facebook share
+			(function(d, s, id) {
+			  var js, fjs = d.getElementsByTagName(s)[0];
+			  if (d.getElementById(id)) return;
+			  js = d.createElement(s); js.id = id;
+			  js.onload=function() {log('facebook sharing loaded.')};
+			  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=103234283101202&version=v2.0";
+			  fjs.parentNode.insertBefore(js, fjs);
+			}(document, 'script', 'facebook-jssdk'));
+
+			// Google+ Share
+			(function() {
+				var s = document.createElement('script');
+				s.src='https://apis.google.com/js/platform.js';
+				s.onload=function() {log('google+ sharing loaded.')};
+				document.getElementsByTagName('head')[0].appendChild(s);
+			})();
+		}
+	</script>
+	<div class="images" > 
+		<span><img src="check.png?16113867974257_1" /></a></span> 
+		<span><img src="check.png?16113867974257_2" /></a></span> 
+		<span><img src="check.png?16113867974257_3" /></a></span> 
+		<span><img src="check.png?16113867974257_4" /></a></span> 
+		<span><img src="check.png?16113867974257_5" /></a></span> 
+		<span><img src="check.png?16113867974257_6" /></a></span> 
+		<span><img src="check.png?16113867974257_7" /></a></span> 
+		<span><img src="check.png?16113867974257_8" /></a></span> 
+		<span><img src="check.png?16113867974257_9" /></a></span> 
+		<span><img src="check.png?16113867974257_10" /></a></span> 
+		<span><img src="check.png?16113867974257_11" /></a></span> 
+		<span><img src="check.png?16113867974257_12" /></a></span> 
+		<span><img src="check.png?16113867974257_13" /></a></span> 
+		<span><img src="check.png?16113867974257_14" /></a></span> 
+		<span><img src="check.png?16113867974257_15" /></a></span> 
+		<span><img src="check.png?16113867974257_16" /></a></span> 
+		<span><img src="check.png?16113867974257_17" /></a></span> 
+		<span><img src="check.png?16113867974257_18" /></a></span> 
+		<span><img src="check.png?16113867974257_19" /></a></span> 
+		<span><img src="check.png?16113867974257_20" /></a></span> 
+		<span><img src="check.png?16113867974257_21" /></a></span> 
+		<span><img src="check.png?16113867974257_22" /></a></span> 
+		<span><img src="check.png?16113867974257_23" /></a></span> 
+		<span><img src="check.png?16113867974257_24" /></a></span> 
+		<span><img src="check.png?16113867974257_25" /></a></span> 
+		<span><img src="check.png?16113867974257_26" /></a></span> 
+		<span><img src="check.png?16113867974257_27" /></a></span> 
+		<span><img src="check.png?16113867974257_28" /></a></span> 
+		<span><img src="check.png?16113867974257_29" /></a></span> 
+		<span><img src="check.png?16113867974257_30" /></a></span> 
+		<span><img src="check.png?16113867974257_31" /></a></span> 
+		<span><img src="check.png?16113867974257_32" /></a></span> 
+		<span><img src="check.png?16113867974257_33" /></a></span> 
+		<span><img src="check.png?16113867974257_34" /></a></span> 
+		<span><img src="check.png?16113867974257_35" /></a></span> 
+		<span><img src="check.png?16113867974257_36" /></a></span> 
+		<span><img src="check.png?16113867974257_37" /></a></span> 
+		<span><img src="check.png?16113867974257_38" /></a></span> 
+		<span><img src="check.png?16113867974257_39" /></a></span> 
+		<span><img src="check.png?16113867974257_40" /></a></span> 
+		<span><img src="check.png?16113867974257_41" /></a></span> 
+		<span><img src="check.png?16113867974257_42" /></a></span> 
+		<span><img src="check.png?16113867974257_43" /></a></span> 
+		<span><img src="check.png?16113867974257_44" /></a></span> 
+		<span><img src="check.png?16113867974257_45" /></a></span> 
+		<span><img src="check.png?16113867974257_46" /></a></span> 
+		<span><img src="check.png?16113867974257_47" /></a></span> 
+		<span><img src="check.png?16113867974257_48" /></a></span> 
+		<span><img src="check.png?16113867974257_49" /></a></span> 
+		<span><img src="check.png?16113867974257_50" /></a></span> 
+		<span><img src="check.png?16113867974257_51" /></a></span> 
+		<span><img src="check.png?16113867974257_52" /></a></span> 
+		<span><img src="check.png?16113867974257_53" /></a></span> 
+		<span><img src="check.png?16113867974257_54" /></a></span> 
+		<span><img src="check.png?16113867974257_55" /></a></span> 
+		<span><img src="check.png?16113867974257_56" /></a></span> 
+		<span><img src="check.png?16113867974257_57" /></a></span> 
+		<span><img src="check.png?16113867974257_58" /></a></span> 
+		<span><img src="check.png?16113867974257_59" /></a></span> 
+		<span><img src="check.png?16113867974257_60" /></a></span> 
+		<span><img src="check.png?16113867974257_61" /></a></span> 
+		<span><img src="check.png?16113867974257_62" /></a></span> 
+		<span><img src="check.png?16113867974257_63" /></a></span> 
+		<span><img src="check.png?16113867974257_64" /></a></span> 
+		<span><img src="check.png?16113867974257_65" /></a></span> 
+		<span><img src="check.png?16113867974257_66" /></a></span> 
+		<span><img src="check.png?16113867974257_67" /></a></span> 
+		<span><img src="check.png?16113867974257_68" /></a></span> 
+		<span><img src="check.png?16113867974257_69" /></a></span> 
+		<span><img src="check.png?16113867974257_70" /></a></span> 
+		<span><img src="check.png?16113867974257_71" /></a></span> 
+		<span><img src="check.png?16113867974257_72" /></a></span> 
+		<span><img src="check.png?16113867974257_73" /></a></span> 
+		<span><img src="check.png?16113867974257_74" /></a></span> 
+		<span><img src="check.png?16113867974257_75" /></a></span> 
+		<span><img src="check.png?16113867974257_76" /></a></span> 
+		<span><img src="check.png?16113867974257_77" /></a></span> 
+		<span><img src="check.png?16113867974257_78" /></a></span> 
+		<span><img src="check.png?16113867974257_79" /></a></span> 
+		<span><img src="check.png?16113867974257_80" /></a></span> 
+		<span><img src="check.png?16113867974257_81" /></a></span> 
+		<span><img src="check.png?16113867974257_82" /></a></span> 
+		<span><img src="check.png?16113867974257_83" /></a></span> 
+		<span><img src="check.png?16113867974257_84" /></a></span> 
+		<span><img src="check.png?16113867974257_85" /></a></span> 
+		<span><img src="check.png?16113867974257_86" /></a></span> 
+		<span><img src="check.png?16113867974257_87" /></a></span> 
+		<span><img src="check.png?16113867974257_88" /></a></span> 
+		<span><img src="check.png?16113867974257_89" /></a></span> 
+		<span><img src="check.png?16113867974257_90" /></a></span> 
+		<span><img src="check.png?16113867974257_91" /></a></span> 
+		<span><img src="check.png?16113867974257_92" /></a></span> 
+		<span><img src="check.png?16113867974257_93" /></a></span> 
+		<span><img src="check.png?16113867974257_94" /></a></span> 
+		<span><img src="check.png?16113867974257_95" /></a></span> 
+		<span><img src="check.png?16113867974257_96" /></a></span> 
+		<span><img src="check.png?16113867974257_97" /></a></span> 
+		<span><img src="check.png?16113867974257_98" /></a></span> 
+		<span><img src="check.png?16113867974257_99" /></a></span> 
+		<span><img src="check.png?16113867974257_100" /></a></span> 
+		<span><img src="check.png?16113867974257_101" /></a></span> 
+		<span><img src="check.png?16113867974257_102" /></a></span> 
+		<span><img src="check.png?16113867974257_103" /></a></span> 
+		<span><img src="check.png?16113867974257_104" /></a></span> 
+		<span><img src="check.png?16113867974257_105" /></a></span> 
+		<span><img src="check.png?16113867974257_106" /></a></span> 
+		<span><img src="check.png?16113867974257_107" /></a></span> 
+		<span><img src="check.png?16113867974257_108" /></a></span> 
+		<span><img src="check.png?16113867974257_109" /></a></span> 
+		<span><img src="check.png?16113867974257_110" /></a></span> 
+		<span><img src="check.png?16113867974257_111" /></a></span> 
+		<span><img src="check.png?16113867974257_112" /></a></span> 
+		<span><img src="check.png?16113867974257_113" /></a></span> 
+		<span><img src="check.png?16113867974257_114" /></a></span> 
+		<span><img src="check.png?16113867974257_115" /></a></span> 
+		<span><img src="check.png?16113867974257_116" /></a></span> 
+		<span><img src="check.png?16113867974257_117" /></a></span> 
+		<span><img src="check.png?16113867974257_118" /></a></span> 
+		<span><img src="check.png?16113867974257_119" /></a></span> 
+		<span><img src="check.png?16113867974257_120" /></a></span> 
+		<span><img src="check.png?16113867974257_121" /></a></span> 
+		<span><img src="check.png?16113867974257_122" /></a></span> 
+		<span><img src="check.png?16113867974257_123" /></a></span> 
+		<span><img src="check.png?16113867974257_124" /></a></span> 
+		<span><img src="check.png?16113867974257_125" /></a></span> 
+		<span><img src="check.png?16113867974257_126" /></a></span> 
+		<span><img src="check.png?16113867974257_127" /></a></span> 
+		<span><img src="check.png?16113867974257_128" /></a></span> 
+		<span><img src="check.png?16113867974257_129" /></a></span> 
+		<span><img src="check.png?16113867974257_130" /></a></span> 
+		<span><img src="check.png?16113867974257_131" /></a></span> 
+		<span><img src="check.png?16113867974257_132" /></a></span> 
+		<span><img src="check.png?16113867974257_133" /></a></span> 
+		<span><img src="check.png?16113867974257_134" /></a></span> 
+		<span><img src="check.png?16113867974257_135" /></a></span> 
+		<span><img src="check.png?16113867974257_136" /></a></span> 
+		<span><img src="check.png?16113867974257_137" /></a></span> 
+		<span><img src="check.png?16113867974257_138" /></a></span> 
+		<span><img src="check.png?16113867974257_139" /></a></span> 
+		<span><img src="check.png?16113867974257_140" /></a></span> 
+		<span><img src="check.png?16113867974257_141" /></a></span> 
+		<span><img src="check.png?16113867974257_142" /></a></span> 
+		<span><img src="check.png?16113867974257_143" /></a></span> 
+		<span><img src="check.png?16113867974257_144" /></a></span> 
+		<span><img src="check.png?16113867974257_145" /></a></span> 
+		<span><img src="check.png?16113867974257_146" /></a></span> 
+		<span><img src="check.png?16113867974257_147" /></a></span> 
+		<span><img src="check.png?16113867974257_148" /></a></span> 
+		<span><img src="check.png?16113867974257_149" /></a></span> 
+		<span><img src="check.png?16113867974257_150" /></a></span> 
+		<span><img src="check.png?16113867974257_151" /></a></span> 
+		<span><img src="check.png?16113867974257_152" /></a></span> 
+		<span><img src="check.png?16113867974257_153" /></a></span> 
+		<span><img src="check.png?16113867974257_154" /></a></span> 
+		<span><img src="check.png?16113867974257_155" /></a></span> 
+		<span><img src="check.png?16113867974257_156" /></a></span> 
+		<span><img src="check.png?16113867974257_157" /></a></span> 
+		<span><img src="check.png?16113867974257_158" /></a></span> 
+		<span><img src="check.png?16113867974257_159" /></a></span> 
+		<span><img src="check.png?16113867974257_160" /></a></span> 
+		<span><img src="check.png?16113867974257_161" /></a></span> 
+		<span><img src="check.png?16113867974257_162" /></a></span> 
+		<span><img src="check.png?16113867974257_163" /></a></span> 
+		<span><img src="check.png?16113867974257_164" /></a></span> 
+		<span><img src="check.png?16113867974257_165" /></a></span> 
+		<span><img src="check.png?16113867974257_166" /></a></span> 
+		<span><img src="check.png?16113867974257_167" /></a></span> 
+		<span><img src="check.png?16113867974257_168" /></a></span> 
+		<span><img src="check.png?16113867974257_169" /></a></span> 
+		<span><img src="check.png?16113867974257_170" /></a></span> 
+		<span><img src="check.png?16113867974257_171" /></a></span> 
+		<span><img src="check.png?16113867974257_172" /></a></span> 
+		<span><img src="check.png?16113867974257_173" /></a></span> 
+		<span><img src="check.png?16113867974257_174" /></a></span> 
+		<span><img src="check.png?16113867974257_175" /></a></span> 
+		<span><img src="check.png?16113867974257_176" /></a></span> 
+		<span><img src="check.png?16113867974257_177" /></a></span> 
+		<span><img src="check.png?16113867974257_178" /></a></span> 
+		<span><img src="check.png?16113867974257_179" /></a></span> 
+		<span><img src="check.png?16113867974257_180" /></a></span> 
+		<span><img src="check.png?16113867974257_181" /></a></span> 
+		<span><img src="check.png?16113867974257_182" /></a></span> 
+		<span><img src="check.png?16113867974257_183" /></a></span> 
+		<span><img src="check.png?16113867974257_184" /></a></span> 
+		<span><img src="check.png?16113867974257_185" /></a></span> 
+		<span><img src="check.png?16113867974257_186" /></a></span> 
+		<span><img src="check.png?16113867974257_187" /></a></span> 
+		<span><img src="check.png?16113867974257_188" /></a></span> 
+		<span><img src="check.png?16113867974257_189" /></a></span> 
+		<span><img src="check.png?16113867974257_190" /></a></span> 
+		<span><img src="check.png?16113867974257_191" /></a></span> 
+		<span><img src="check.png?16113867974257_192" /></a></span> 
+		<span><img src="check.png?16113867974257_193" /></a></span> 
+		<span><img src="check.png?16113867974257_194" /></a></span> 
+		<span><img src="check.png?16113867974257_195" /></a></span> 
+		<span><img src="check.png?16113867974257_196" /></a></span> 
+		<span><img src="check.png?16113867974257_197" /></a></span> 
+		<span><img src="check.png?16113867974257_198" /></a></span> 
+		<span><img src="check.png?16113867974257_199" /></a></span> 
+		<span><img src="check.png?16113867974257_200" /></a></span> 
+		<span><img src="check.png?16113867974257_201" /></a></span> 
+		<span><img src="check.png?16113867974257_202" /></a></span> 
+		<span><img src="check.png?16113867974257_203" /></a></span> 
+		<span><img src="check.png?16113867974257_204" /></a></span> 
+		<span><img src="check.png?16113867974257_205" /></a></span> 
+		<span><img src="check.png?16113867974257_206" /></a></span> 
+		<span><img src="check.png?16113867974257_207" /></a></span> 
+		<span><img src="check.png?16113867974257_208" /></a></span> 
+		<span><img src="check.png?16113867974257_209" /></a></span> 
+		<span><img src="check.png?16113867974257_210" /></a></span> 
+		<span><img src="check.png?16113867974257_211" /></a></span> 
+		<span><img src="check.png?16113867974257_212" /></a></span> 
+		<span><img src="check.png?16113867974257_213" /></a></span> 
+		<span><img src="check.png?16113867974257_214" /></a></span> 
+		<span><img src="check.png?16113867974257_215" /></a></span> 
+		<span><img src="check.png?16113867974257_216" /></a></span> 
+		<span><img src="check.png?16113867974257_217" /></a></span> 
+		<span><img src="check.png?16113867974257_218" /></a></span> 
+		<span><img src="check.png?16113867974257_219" /></a></span> 
+		<span><img src="check.png?16113867974257_220" /></a></span> 
+		<span><img src="check.png?16113867974257_221" /></a></span> 
+		<span><img src="check.png?16113867974257_222" /></a></span> 
+		<span><img src="check.png?16113867974257_223" /></a></span> 
+		<span><img src="check.png?16113867974257_224" /></a></span> 
+		<span><img src="check.png?16113867974257_225" /></a></span> 
+		<span><img src="check.png?16113867974257_226" /></a></span> 
+		<span><img src="check.png?16113867974257_227" /></a></span> 
+		<span><img src="check.png?16113867974257_228" /></a></span> 
+		<span><img src="check.png?16113867974257_229" /></a></span> 
+		<span><img src="check.png?16113867974257_230" /></a></span> 
+		<span><img src="check.png?16113867974257_231" /></a></span> 
+		<span><img src="check.png?16113867974257_232" /></a></span> 
+		<span><img src="check.png?16113867974257_233" /></a></span> 
+		<span><img src="check.png?16113867974257_234" /></a></span> 
+		<span><img src="check.png?16113867974257_235" /></a></span> 
+		<span><img src="check.png?16113867974257_236" /></a></span> 
+		<span><img src="check.png?16113867974257_237" /></a></span> 
+		<span><img src="check.png?16113867974257_238" /></a></span> 
+		<span><img src="check.png?16113867974257_239" /></a></span> 
+		<span><img src="check.png?16113867974257_240" /></a></span> 
+		<span><img src="check.png?16113867974257_241" /></a></span> 
+		<span><img src="check.png?16113867974257_242" /></a></span> 
+		<span><img src="check.png?16113867974257_243" /></a></span> 
+		<span><img src="check.png?16113867974257_244" /></a></span> 
+		<span><img src="check.png?16113867974257_245" /></a></span> 
+		<span><img src="check.png?16113867974257_246" /></a></span> 
+		<span><img src="check.png?16113867974257_247" /></a></span> 
+		<span><img src="check.png?16113867974257_248" /></a></span> 
+		<span><img src="check.png?16113867974257_249" /></a></span> 
+		<span><img src="check.png?16113867974257_250" /></a></span> 
+		<span><img src="check.png?16113867974257_251" /></a></span> 
+		<span><img src="check.png?16113867974257_252" /></a></span> 
+		<span><img src="check.png?16113867974257_253" /></a></span> 
+		<span><img src="check.png?16113867974257_254" /></a></span> 
+		<span><img src="check.png?16113867974257_255" /></a></span> 
+		<span><img src="check.png?16113867974257_256" /></a></span> 
+		<span><img src="check.png?16113867974257_257" /></a></span> 
+		<span><img src="check.png?16113867974257_258" /></a></span> 
+		<span><img src="check.png?16113867974257_259" /></a></span> 
+		<span><img src="check.png?16113867974257_260" /></a></span> 
+		<span><img src="check.png?16113867974257_261" /></a></span> 
+		<span><img src="check.png?16113867974257_262" /></a></span> 
+		<span><img src="check.png?16113867974257_263" /></a></span> 
+		<span><img src="check.png?16113867974257_264" /></a></span> 
+		<span><img src="check.png?16113867974257_265" /></a></span> 
+		<span><img src="check.png?16113867974257_266" /></a></span> 
+		<span><img src="check.png?16113867974257_267" /></a></span> 
+		<span><img src="check.png?16113867974257_268" /></a></span> 
+		<span><img src="check.png?16113867974257_269" /></a></span> 
+		<span><img src="check.png?16113867974257_270" /></a></span> 
+		<span><img src="check.png?16113867974257_271" /></a></span> 
+		<span><img src="check.png?16113867974257_272" /></a></span> 
+		<span><img src="check.png?16113867974257_273" /></a></span> 
+		<span><img src="check.png?16113867974257_274" /></a></span> 
+		<span><img src="check.png?16113867974257_275" /></a></span> 
+		<span><img src="check.png?16113867974257_276" /></a></span> 
+		<span><img src="check.png?16113867974257_277" /></a></span> 
+		<span><img src="check.png?16113867974257_278" /></a></span> 
+		<span><img src="check.png?16113867974257_279" /></a></span> 
+		<span><img src="check.png?16113867974257_280" /></a></span> 
+		<span><img src="check.png?16113867974257_281" /></a></span> 
+		<span><img src="check.png?16113867974257_282" /></a></span> 
+		<span><img src="check.png?16113867974257_283" /></a></span> 
+		<span><img src="check.png?16113867974257_284" /></a></span> 
+		<span><img src="check.png?16113867974257_285" /></a></span> 
+		<span><img src="check.png?16113867974257_286" /></a></span> 
+		<span><img src="check.png?16113867974257_287" /></a></span> 
+		<span><img src="check.png?16113867974257_288" /></a></span> 
+		<span><img src="check.png?16113867974257_289" /></a></span> 
+		<span><img src="check.png?16113867974257_290" /></a></span> 
+		<span><img src="check.png?16113867974257_291" /></a></span> 
+		<span><img src="check.png?16113867974257_292" /></a></span> 
+		<span><img src="check.png?16113867974257_293" /></a></span> 
+		<span><img src="check.png?16113867974257_294" /></a></span> 
+		<span><img src="check.png?16113867974257_295" /></a></span> 
+		<span><img src="check.png?16113867974257_296" /></a></span> 
+		<span><img src="check.png?16113867974257_297" /></a></span> 
+		<span><img src="check.png?16113867974257_298" /></a></span> 
+		<span><img src="check.png?16113867974257_299" /></a></span> 
+		<span><img src="check.png?16113867974257_300" /></a></span> 
+		<span><img src="check.png?16113867974257_301" /></a></span> 
+		<span><img src="check.png?16113867974257_302" /></a></span> 
+		<span><img src="check.png?16113867974257_303" /></a></span> 
+		<span><img src="check.png?16113867974257_304" /></a></span> 
+		<span><img src="check.png?16113867974257_305" /></a></span> 
+		<span><img src="check.png?16113867974257_306" /></a></span> 
+		<span><img src="check.png?16113867974257_307" /></a></span> 
+		<span><img src="check.png?16113867974257_308" /></a></span> 
+		<span><img src="check.png?16113867974257_309" /></a></span> 
+		<span><img src="check.png?16113867974257_310" /></a></span> 
+		<span><img src="check.png?16113867974257_311" /></a></span> 
+		<span><img src="check.png?16113867974257_312" /></a></span> 
+		<span><img src="check.png?16113867974257_313" /></a></span> 
+		<span><img src="check.png?16113867974257_314" /></a></span> 
+		<span><img src="check.png?16113867974257_315" /></a></span> 
+		<span><img src="check.png?16113867974257_316" /></a></span> 
+		<span><img src="check.png?16113867974257_317" /></a></span> 
+		<span><img src="check.png?16113867974257_318" /></a></span> 
+		<span><img src="check.png?16113867974257_319" /></a></span> 
+		<span><img src="check.png?16113867974257_320" /></a></span> 
+		<span><img src="check.png?16113867974257_321" /></a></span> 
+		<span><img src="check.png?16113867974257_322" /></a></span> 
+		<span><img src="check.png?16113867974257_323" /></a></span> 
+		<span><img src="check.png?16113867974257_324" /></a></span> 
+		<span><img src="check.png?16113867974257_325" /></a></span> 
+		<span><img src="check.png?16113867974257_326" /></a></span> 
+		<span><img src="check.png?16113867974257_327" /></a></span> 
+		<span><img src="check.png?16113867974257_328" /></a></span> 
+		<span><img src="check.png?16113867974257_329" /></a></span> 
+		<span><img src="check.png?16113867974257_330" /></a></span> 
+		<span><img src="check.png?16113867974257_331" /></a></span> 
+		<span><img src="check.png?16113867974257_332" /></a></span> 
+		<span><img src="check.png?16113867974257_333" /></a></span> 
+		<span><img src="check.png?16113867974257_334" /></a></span> 
+		<span><img src="check.png?16113867974257_335" /></a></span> 
+		<span><img src="check.png?16113867974257_336" /></a></span> 
+		<span><img src="check.png?16113867974257_337" /></a></span> 
+		<span><img src="check.png?16113867974257_338" /></a></span> 
+		<span><img src="check.png?16113867974257_339" /></a></span> 
+		<span><img src="check.png?16113867974257_340" /></a></span> 
+		<span><img src="check.png?16113867974257_341" /></a></span> 
+		<span><img src="check.png?16113867974257_342" /></a></span> 
+		<span><img src="check.png?16113867974257_343" /></a></span> 
+		<span><img src="check.png?16113867974257_344" /></a></span> 
+		<span><img src="check.png?16113867974257_345" /></a></span> 
+		<span><img src="check.png?16113867974257_346" /></a></span> 
+		<span><img src="check.png?16113867974257_347" /></a></span> 
+		<span><img src="check.png?16113867974257_348" /></a></span> 
+		<span><img src="check.png?16113867974257_349" /></a></span> 
+		<span><img src="check.png?16113867974257_350" /></a></span> 
+		<span><img src="check.png?16113867974257_351" /></a></span> 
+		<span><img src="check.png?16113867974257_352" /></a></span> 
+		<span><img src="check.png?16113867974257_353" /></a></span> 
+		<span><img src="check.png?16113867974257_354" /></a></span> 
+		<span><img src="check.png?16113867974257_355" /></a></span> 
+		<span><img src="check.png?16113867974257_356" /></a></span> 
+		<span><img src="check.png?16113867974257_357" /></a></span> 
+		<span><img src="check.png?16113867974257_358" /></a></span> 
+		<span><img src="check.png?16113867974257_359" /></a></span> 
+		<span><img src="check.png?16113867974257_360" /></a></span>	</div>
+	<footer>
+		<div class="shares">
+			<div class="share-box">
+				<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://www.httpvshttps.com" data-text="Encrypted websites protect our privacy and are significantly faster. Run this test and be amazed. #HttpsEverywhere"></a>
+			</div>
+			<div class="share-box">
+				<div class="fb-share-button" data-href="http://www.httpvshttps.com/" data-layout="button_count"></div>
+			</div>
+			<div class="share-box">
+				<g:plusone size="medium" width="200" align="right" href="http://www.httpvshttps.com/"></g:plusone>
+			</div>
+		</div>
+
+		<p class="sup">
+			Only full, end-end encryption ensures complete privacy. <a href="https://bit.ly/cf-ssl">Cloudflare</a> and <a href="https://bit.ly/max-cdn">MaxCDN</a> SSL encryption services compromise privacy by using
+			<a href="https://bit.ly/https-compromise">interceptive middle proxy servers</a>.
+			HTTPS means &quot;Secure HTTP&quot;. Plaintext HTTP/1.1 is compared against encrypted
+                        <a href="https://http2.github.io/">HTTP/2</a> HTTPS on a non-caching, nginx server with a direct, non-proxied connection.
+		</p>
+		<p class="le">
+			<a class="le-logo" href="https://letsencrypt.org/"><img src="letsencrypt-logo-horizontal.svg" width="200" height="48" /></a>
+			Free TLS Certificate provided by <a href="https://letsencrypt.org/">Let's Encrypt</a>.
+		</p>
+
+		<div class="servers">
+			Server location: <a href="servers.png">Dallas, USA</a>. Contact me below if you're getting slow results from Europe or Japan.
+		</div>
+
+		<div class="author">
+			©2014-2021<a href="https://www.anthum.com/me">Anthum™</a>
+			<a href="https://twitter.com/AnthumChris">@AnthumChris</a>
+		</div>
+	</footer>
+	<div id="fb-root"></div>
+</body>
+</html>
